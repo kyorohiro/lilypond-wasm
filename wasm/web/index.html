@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LilyPond WASM preview</title>
+<style>body{font:16px system-ui;margin:24px}textarea{display:block;width:95%;height:180px}button{padding:8px;margin:8px}dialog{width:min(95vw,1100px);max-height:90vh;overflow:auto}</style>
+<h1>LilyPond WASM preview</h1><p>ローカルでSVGを生成します。初回は約72MiBのアセットを読み込みます。</p>
+<textarea id="source" aria-label="LilyPond source">\version "2.24.3"
+{ c'4 d' e' f' }</textarea>
+<button id="render">Preview</button>
+<dialog id="preview"><h2>Preview</h2><p data-status role="status"></p><button data-cancel>Cancel rendering</button>
+<form method="dialog"><button>Close</button></form><div data-pages></div><details><summary>Diagnostics</summary><pre data-logs style="white-space:pre-wrap"></pre></details></dialog>
+<script type="module">
+import {createLilyPondPreview} from './lilypond_preview.js';
+const preview=createLilyPondPreview(document.getElementById('preview'));
+document.getElementById('render').addEventListener('click',()=>preview.show(document.getElementById('source').value));
+</script></html>

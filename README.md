@@ -27,6 +27,11 @@ in the Scheme programming language.
 More about LilyPond in our [Introduction](https://lilypond.org/introduction).
 
 
+## Browser / WebAssembly experiment
+
+Safari対応の修正記録、WASM再生成手順、ブラウザでの使い方は
+[wasm/README.md](wasm/README.md) を参照してください。
+
 ## Building and installing
 
 Binaries are available at https://lilypond.org/download.html

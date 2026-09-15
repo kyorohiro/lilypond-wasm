@@ -1,0 +1,4 @@
+/build/
+/web/vendor/lilypond/dist/
+/web/vendor/lilypond/runtime/
+__pycache__/
