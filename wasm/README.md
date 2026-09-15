@@ -8,7 +8,9 @@ Safari対応を再利用できるように、このforkに保存しています�
 
 このリポジトリはLilyPond本体のソースです。記録追加時のHEADは
 `a108be336eb879650aaf760539eea89c0c817642`。
-ここにあるC++を直接ビルドして、今回のWASMを作ったわけではありません。
+保存したプレビューのWASMは既存バイナリの後処理で作りました。
+その後、移植側が固定したLilyPondのC++ソースからもWASMをビルドできました。
+このforkのルートにあるC++チェックアウトとはリビジョンが異なります。
 使った移植は https://github.com/hlolli/lilypond-wasm です。
 
 - npm: `@hlolli/lilypond-wasm@0.1.0-alpha.1`
@@ -70,7 +72,13 @@ pack処理は543個のruntimeファイルを束ねます（展開後57,779,421 b
 WASM単体では動かず、Scheme、フォント、設定、worker、JS helperも必要です。
 生成した `build/`、`dist/`、`runtime/` はGit管理から除外しています。
 
-## 完全なソースからビルドする場合（今回未実施）
+## ソースからエンジンをビルドする（確認済み）
+
+Docker + Nixでalpha.1の固定ソースから `.#lilypond` のビルドに成功しました。
+実行コマンド、入力リビジョン、生成物と描画検証の結果は
+[SOURCE_BUILD.md](SOURCE_BUILD.md) に記録しています。
+フォント・Schemeなどのruntimeは保存済みのものを再利用しています。
+以下のnpm配布物全体の生成は今回の検証対象ではありません。
 
 [SOURCE.md](web/vendor/lilypond/SOURCE.md) に記載したalpha.1の完全ソースを取得し、
 SHA-256を確認して展開し、その中のビルドプロジェクトの指示に従ってください。
@@ -86,7 +94,7 @@ nix build .#checks.aarch64-darwin.lilypond-npm-smoke --no-update-lock-file --pri
 これらをこのLilyPond本体forkのルートで実行することはできません。
 本体forkの変更を組み込むには、移植側のLilyPond source指定とパッチを合わせる作業が別途必要です。
 再ビルド後のバイナリはalpha.1とハッシュが変わるので、固定入力用optimizerをそのまま使わず、
-変更内容を確認して後処理と検証を適用します。完全なソースビルドはこの記録作成時には行っていません。
+変更内容を確認して後処理と検証を適用します。
 
 ## 簡単な使い方・検証
 

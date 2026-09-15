@@ -1,6 +1,7 @@
 // Execute the shipped browser worker with a Node file-backed fetch/self shim.
 // This checks the real WASM/runtime, not browser UI or HTTP deployment.
 // Optional argv[2]: a local .ly file (never copied into the repository).
+// LILYPOND_WASM_PATH can select a source-built engine while reusing this runtime.
 import { readFile } from 'node:fs/promises';
 const url = new URL('../web/vendor/lilypond/lilypond.worker.js', import.meta.url);
 let handler;
@@ -19,7 +20,9 @@ globalThis.self = {
     }
   },
 };
-globalThis.fetch = async input => new Response(await readFile(new URL(input)), {
+globalThis.fetch = async input => new Response(await readFile(
+  new URL(input).pathname.endsWith('.wasm') && process.env.LILYPOND_WASM_PATH
+    ? process.env.LILYPOND_WASM_PATH : new URL(input)), {
   headers: { 'Content-Type': new URL(input).pathname.endsWith('.wasm') ? 'application/wasm' : 'application/octet-stream' },
 });
 await import(url.href);
