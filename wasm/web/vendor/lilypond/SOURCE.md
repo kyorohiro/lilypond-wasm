@@ -12,14 +12,20 @@ Source archive SHA-256: `ec09aec6382e3db1355d02b3354ae81705d3100fad9fd1cf111ea8d
 
 Upstream Wasm SHA-256: `e957ee1839f0102d9fd543821019e7ecb5fac71584dcc7a92983dd7525499961`
 
-Tetorica post-processes that binary with Binaryen version 132, using
+The distributed engine is built from the alpha.1 port's pinned sources using
+Docker and Nix; the runtime pack is retained from the alpha.1 npm package.
+Exact revisions, commands and output hashes are recorded in
+[SOURCE_BUILD.md](../../../SOURCE_BUILD.md).
+
+Tetorica post-processes the source-built binary with Binaryen version 132, using
 `--coalesce-locals --vacuum` and the original target features. This reduces
 local-variable slots and call-stack pressure without changing the linear-memory
 stack allocation. The reproducible command is in
-`wasm/scripts/optimize_lilypond_wasm.py` in this fork (copied from Tetorica).
+the call-stack optimization section of SOURCE_BUILD.md. The fixed-input
+`wasm/scripts/optimize_lilypond_wasm.py` reproduces the older npm-based engine.
 Binaryen source: <https://github.com/WebAssembly/binaryen/tree/version_132>.
 
-Distributed Wasm SHA-256: `1d4d5d576ac40a720f2a1224061e5d068b5e805c4d2554f5980d0e8039384854`
+Distributed Wasm SHA-256: `59b346682e4e96c75458992883522cc0427751756280f0e6d36917dc0907d986`
 
 That archive must contain this repository, every local patch and build file,
 the pinned LilyPond and dependency sources, and the linked WASI and LLVM

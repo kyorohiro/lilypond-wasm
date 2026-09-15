@@ -1,4 +1,8 @@
 /build/
-/web/vendor/lilypond/dist/
-/web/vendor/lilypond/runtime/
+!/web/sample.ly
+/web/vendor/lilypond/dist/*
+!/web/vendor/lilypond/dist/lilypond.wasm
+/web/vendor/lilypond/runtime/*
+!/web/vendor/lilypond/runtime/runtime-files.json
+!/web/vendor/lilypond/runtime/runtime-files.pack.gz
 __pycache__/

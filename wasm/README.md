@@ -4,6 +4,19 @@
 Analyzer本体は軽量なMusicXML表示に移行しましたが、LilyPondの組版結果と
 Safari対応を再利用できるように、このforkに保存しています。
 
+## cloneして使う
+
+ビルド済みWASMと必要なruntime packを `wasm/web/vendor/lilypond/` に同梱しています。
+このリポジトリをcloneしたら、ルートで以下を実行してください。NixやDockerは不要です。
+
+```sh
+python3 -m http.server 38089 --directory wasm/web
+```
+
+http://localhost:38089/ を開いて `.ly` を貼り、Previewを押します。
+同梱エンジンはソースビルド後にBinaryen 132で後処理した版です。
+ファイルのハッシュは `wasm/web/vendor/lilypond/DISTRIBUTION_SHA256SUMS` に記録しています。
+
 ## このforkとWASM移植の関係
 
 このリポジトリはLilyPond本体のソースです。記録追加時のHEADは
@@ -70,7 +83,10 @@ python3 wasm/scripts/optimize_lilypond_wasm.py wasm/build/package/dist/lilypond.
 出力ハッシュが上表と一致することを確認してください。
 pack処理は543個のruntimeファイルを束ねます（展開後57,779,421 bytes）。
 WASM単体では動かず、Scheme、フォント、設定、worker、JS helperも必要です。
-生成した `build/`、`dist/`、`runtime/` はGit管理から除外しています。
+作業用 `build/` はGit管理から除外しています。プレビューに必要な
+`dist/lilypond.wasm` と `runtime/runtime-files.json`、`runtime/runtime-files.pack.gz`
+はGit管理対象です。上の再生成コマンドは旧npm版の再現用なので、実行すると同梱の
+ソースビルド版エンジンを旧版で上書きします。
 
 ## ソースからエンジンをビルドする（確認済み）
 

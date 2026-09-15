@@ -53,11 +53,20 @@ cache downloads (2.6 GiB unpacked).
 from inside the container rather than following that symlink on macOS:
 
 ```sh
+if [ -f wasm/build/source-build/lilypond-source-built.wasm ]; then
+  chmod u+w wasm/build/source-build/lilypond-source-built.wasm
+fi
 docker exec tetorica-lilypond-source-build \
   cp /work/result-lilypond/bin/lilypond.wasm /work/lilypond-source-built.wasm
+chmod u+w wasm/build/source-build/lilypond-source-built.wasm
 LILYPOND_WASM_PATH=wasm/build/source-build/lilypond-source-built.wasm \
   node wasm/scripts/check_lilypond_wasm.mjs
 ```
+
+Nix store files are read-only. The initial copy can inherit that mode, causing
+later copies through Docker Desktop's bind mount to fail with `Operation not
+permitted`. The host-side `chmod` above makes only the exported copy writable;
+it does not modify the Nix store.
 
 This check reuses the preserved alpha.1 runtime pack and browser worker. It does
 not rebuild fonts/runtime data or validate a complete rebuilt npm distribution.
@@ -96,6 +105,8 @@ this repository.
 | Source-built | 61,233,871 | `a3df5ef22b1d2ce5ae0b089d90fc4883cbabc3ea02dbe4ca7dba5bc921747785` |
 | Source-built, coalesced | 60,148,735 | `59b346682e4e96c75458992883522cc0427751756280f0e6d36917dc0907d986` |
 
-The preserved demo engine was not replaced. New binaries and the build log are
-kept under ignored `wasm/build/source-build/`. Browser testing of these new
-binaries is separate from the earlier user-confirmed Safari result.
+The coalesced engine is now copied to `wasm/web/vendor/lilypond/dist/lilypond.wasm`
+for the clone-and-run demo, alongside the preserved runtime pack. Working
+binaries and the build log remain under ignored `wasm/build/source-build/`.
+Browser testing of this engine is separate from the earlier user-confirmed
+Safari result.

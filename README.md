@@ -31,6 +31,9 @@ More about LilyPond in our [Introduction](https://lilypond.org/introduction).
 
 Safari対応の修正記録、WASM再生成手順、ブラウザでの使い方は
 [wasm/README.md](wasm/README.md) を参照してください。
+ビルド済みWASMとruntimeを同梱しています。clone後に
+`python3 -m http.server 38089 --directory wasm/web` を実行して
+http://localhost:38089/ を開くとプレビューを使えます。
 
 ## Building and installing
 
